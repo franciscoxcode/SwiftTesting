@@ -8,20 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    let developers = ["Max", "Sofía", "Carlos"]
-    let designers = ["Andrea", "Luis", "Valeria"]
-
     var body: some View {
-        List {
-            Section(header: Text("Developers")) {
-                ForEach(developers, id: \.self) { name in
-                    Text(name)
-                }
-            }
-
-            Section(header: Text("Designers")) {
-                ForEach(designers, id: \.self) { name in
-                    Text(name)
+        ScrollView(.horizontal) {
+            HStack {
+                ForEach(1...10, id: \.self) { num in
+                    Text("Item \(num)")
+                        .padding()
+                        .frame(width: 100, height: 100)
+                        .background(Color.green.opacity(0.3))
+                        .cornerRadius(10)
                 }
             }
         }
