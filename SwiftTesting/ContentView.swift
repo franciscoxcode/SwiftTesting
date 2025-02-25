@@ -8,40 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    let developers = ["Max", "Sofía", "Carlos"]
+    let designers = ["Andrea", "Luis", "Valeria"]
+
     var body: some View {
-        HStack{
-            ProfileCardView(name: "Max", role: "Engineer", imageName: "him")
-            ProfileCardView(name: "Benja", role: "Engineer",imageName: "him")
+        List {
+            Section(header: Text("Developers")) {
+                ForEach(developers, id: \.self) { name in
+                    Text(name)
+                }
+            }
+
+            Section(header: Text("Designers")) {
+                ForEach(designers, id: \.self) { name in
+                    Text(name)
+                }
+            }
         }
     }
 }
 
-struct ProfileCardView: View {
-    var name: String
-    var role: String
-    var imageName: String
-
-    var body: some View {
-        VStack {
-            Image(imageName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 100, height: 100)
-                .clipShape(Circle())
-
-            Text(name)
-                .font(.headline)
-
-            Text(role)
-                .font(.subheadline)
-                .foregroundColor(.gray)
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(10)
-        .shadow(radius: 5)
-    }
-}
 
 
 #Preview {
