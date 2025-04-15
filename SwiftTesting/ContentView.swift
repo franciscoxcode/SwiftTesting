@@ -1,30 +1,32 @@
-//
-//  ContentView.swift
-//  SwiftTesting
-//
-//  Created by Francisco Jean on 24/02/25.
-//
-
 import SwiftUI
 
-struct ContentView: View {
+struct KeyboardToolbarView: View {
+    @State private var text = ""
+
     var body: some View {
-        ScrollView(.horizontal) {
-            HStack {
-                ForEach(1...10, id: \.self) { num in
-                    Text("Item \(num)")
-                        .padding()
-                        .frame(width: 100, height: 100)
-                        .background(Color.green.opacity(0.3))
-                        .cornerRadius(10)
+        NavigationStack {
+            VStack {
+                TextField("Escribe algo...", text: $text)
+                    .textFieldStyle(.roundedBorder)
+                    .padding()
+                Spacer()
+            }
+            .navigationTitle("Toolbar con Teclado")
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button("Cancelar") {
+                        text = ""
+                    }
+                    Spacer()
+                    Button("Guardar") {
+                        print("Texto guardado: \(text)")
+                    }
                 }
             }
         }
     }
 }
 
-
-
 #Preview {
-    ContentView()
+    KeyboardToolbarView()
 }
