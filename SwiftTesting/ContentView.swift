@@ -5,9 +5,21 @@ struct KeyboardToolbarView: View {
         VStack {
                     Image("robot")
                         .resizable()
-                        .scaleEffect(x: 0.5, y: 0.3)
-                        .frame(width: 300, height: 500)
+                        .frame(width: 300, height: 300)
                         .border(Color.green, width: 3)
+                        .overlay(
+                            Text("I love you!")
+                                .font(.title)
+                                .foregroundColor(.red)
+                                .padding()
+                            , alignment: .topLeading
+                        )
+                        .overlay(
+                            Image(systemName: "star.fill")
+                                .foregroundColor(.yellow)
+                                .padding()
+                            , alignment: .bottomTrailing
+                        )
 
                     Text("")
                         .padding()
