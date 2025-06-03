@@ -1,18 +1,23 @@
 import SwiftUI
 
-struct KeyboardToolbarView: View {
+struct ContentView: View {
     var body: some View {
-        Button {
-            print("Settings tapped")
-        } label: {
-            Label("Settings", systemImage: "gearshape.fill")
-        }
-        .buttonStyle(.automatic)
+        LikeButtonView()
     }
 }
 
-
+struct LikeButtonView: View {
+    @State private var isLiked = false
+    
+    var body: some View {
+        Image(systemName: "heart.fill")
+            .onTapGesture {
+                isLiked.toggle()
+            }
+            .foregroundColor(isLiked == true ? .red : .black)
+    }
+}
 
 #Preview {
-    KeyboardToolbarView()
+    ContentView()
 }
