@@ -1,22 +1,39 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var counter = 0
+    @State var heartColor: Color = .black
+    
     var body: some View {
-        LikeButtonView()
+        LikeButtonView(counter: $counter, heartColor: $heartColor)
     }
 }
 
 struct LikeButtonView: View {
-    @State private var isLiked = false
+    
+    @Binding var counter: Int
+    @Binding var heartColor: Color
+    let colors: [Color] = [.red, .green, .pink, .yellow, .orange, .blue, .purple, .brown, .gray, .mint]
     
     var body: some View {
-        Image(systemName: "heart.fill")
-            .onTapGesture {
-                isLiked.toggle()
+      
+        Button (action: {
+            counter += 1
+            if let randomColor = colors.randomElement(){
+                heartColor = randomColor 
             }
-            .foregroundColor(isLiked == true ? .red : .black)
+        }){
+            Image(systemName: "heart.fill")
+                .foregroundColor(heartColor)
+        }
+            .font(.custom("", size: 22))
+            .padding(.bottom, 15)
+        
+        Text("\(counter)")
+            .font(.custom("", size: 22))
     }
 }
+
 
 #Preview {
     ContentView()
