@@ -1,32 +1,38 @@
 import SwiftUI
 
-struct ContentView: View {
-    @StateObject var taskviewmodel = TaskViewModel()
+struct ContentView: View {    
+    @StateObject var counterview = CounterViewModel() 
     
     var body: some View {
         HStack {
             Button(action: {
-                taskviewmodel.modifyTask()
+                counterview.substractOne()
             }){
-                Image(systemName: taskviewmodel.checked ? "checkmark.circle.fill" : "checkmark.circle")
+                Image(systemName: "minus")
             }
-            Text("\(taskviewmodel.task)")
-                .strikethrough(taskviewmodel.checked)
+            Text("\(counterview.counter)")
+                .padding()
+            Button(action: {
+                counterview.addOne()
+            }){
+                Image(systemName: "plus")
+            }
         }
+        .font(.custom("", size: 25))
     }
 }
 
-class TaskViewModel: ObservableObject {
-    @Published var task: String = "finish this task"
-    @Published var checked: Bool = false
+class CounterViewModel: ObservableObject {
+    @Published var counter = 0
     
-    func modifyTask(){
-        checked.toggle()
-        task = checked ? "task finished" : "finish the task" 
+    func addOne() {
+        counter += 1
+    }
+    
+    func substractOne() {
+        counter -= 1
     }
 }
-
-
 
 
 #Preview {
