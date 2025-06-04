@@ -1,38 +1,32 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var counter = 0
-    @State var heartColor: Color = .black
+    @StateObject var taskviewmodel = TaskViewModel()
     
     var body: some View {
-        LikeButtonView(counter: $counter, heartColor: $heartColor)
+        HStack {
+            Button(action: {
+                taskviewmodel.modifyTask()
+            }){
+                Image(systemName: taskviewmodel.checked ? "checkmark.circle.fill" : "checkmark.circle")
+            }
+            Text("\(taskviewmodel.task)")
+                .strikethrough(taskviewmodel.checked)
+        }
     }
 }
 
-struct LikeButtonView: View {
+class TaskViewModel: ObservableObject {
+    @Published var task: String = "finish this task"
+    @Published var checked: Bool = false
     
-    @Binding var counter: Int
-    @Binding var heartColor: Color
-    let colors: [Color] = [.red, .green, .pink, .yellow, .orange, .blue, .purple, .brown, .gray, .mint]
-    
-    var body: some View {
-      
-        Button (action: {
-            counter += 1
-            if let randomColor = colors.randomElement(){
-                heartColor = randomColor 
-            }
-        }){
-            Image(systemName: "heart.fill")
-                .foregroundColor(heartColor)
-        }
-            .font(.custom("", size: 22))
-            .padding(.bottom, 15)
-        
-        Text("\(counter)")
-            .font(.custom("", size: 22))
+    func modifyTask(){
+        checked.toggle()
+        task = checked ? "task finished" : "finish the task" 
     }
 }
+
+
 
 
 #Preview {
