@@ -6,7 +6,7 @@ struct ContentView: View {
     var body: some View {
         HStack {
             Button(action: {
-                counterview.substractOne()
+                counterview.subtractOne()
             }){
                 Image(systemName: "minus")
             }
@@ -18,7 +18,7 @@ struct ContentView: View {
                 Image(systemName: "plus")
             }
         }
-        .font(.custom("", size: 25))
+        .font(.system(size: 25))
     }
 }
 
@@ -29,8 +29,8 @@ class CounterViewModel: ObservableObject {
         counter += 1
     }
     
-    func substractOne() {
-        counter -= 1
+    func subtractOne() {
+        counter = max(0, counter - 1)
     }
 }
 
