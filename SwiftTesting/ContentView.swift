@@ -1,38 +1,36 @@
 import SwiftUI
 
-struct ContentView: View {    
-    @StateObject var counterview = CounterViewModel() 
-    
-    var body: some View {
-        HStack {
-            Button(action: {
-                counterview.substractOne()
-            }){
-                Image(systemName: "minus")
-            }
-            Text("\(counterview.counter)")
-                .padding()
-            Button(action: {
-                counterview.addOne()
-            }){
-                Image(systemName: "plus")
-            }
-        }
-        .font(.custom("", size: 25))
-    }
-}
-
 class CounterViewModel: ObservableObject {
     @Published var counter = 0
     
-    func addOne() {
+    func increment(){
         counter += 1
     }
+}
+
+struct ContentView: View {     
+    @StateObject var viewModel = CounterViewModel()
     
-    func substractOne() {
-        counter -= 1
+    var body: some View {
+        VStack {
+            SecondView(viewModel: viewModel)
+        }
     }
 }
+
+struct SecondView: View {
+    @ObservedObject var viewModel: CounterViewModel
+    var body: some View {
+        HStack {
+            Text("\(viewModel.counter)")
+            Button("+"){
+                viewModel.increment()
+            }
+        }
+    }
+}
+
+
 
 
 #Preview {
