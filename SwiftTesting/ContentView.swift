@@ -1,22 +1,23 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var text1: String = ""
-    @State private var text2: String = ""
-
+    @State private var userName: String = ""
+    
     var body: some View {
         Form {
-            VStack {
-                TextField("Default", text: $text1)
-                    .textFieldStyle(DefaultTextFieldStyle())
-
-                TextField("Plain", text: $text2)
-                    .textFieldStyle(PlainTextFieldStyle())
+            Section(header: Text("User Details")){
+                TextField("Enter user name", text: $userName)
+                    .autocapitalization(.words)
+                    .onChange(of: userName) { oldValue, newValue in
+                        if newValue.count < 4 {
+                            print("Name too short!")
+                        }
+                    }
             }
-            .padding()
         }
     }
 }
+
 #Preview {
     ContentView()
 }
