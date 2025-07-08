@@ -1,16 +1,14 @@
 import SwiftUI
 
-struct ContentView: View {
-    @State private var quantity: Int = 0
+struct DatePickerWheelView: View {
+    @State private var colorFavorito = Color.blue
     
     var body: some View {
-        Form{
-            Stepper("Quantity: \(quantity)", value: $quantity)
-        }
-    }    
+        ColorPicker("Elige un color", selection: $colorFavorito)
+            .padding()
+    }
 }
-    
 
 #Preview {
-    ContentView()
+    DatePickerWheelView()
 }
