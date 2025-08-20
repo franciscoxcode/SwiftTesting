@@ -10,7 +10,7 @@ struct Book: Hashable {
 struct ContentView: View {
     
     let books = [
-        Book(name: "The Hobbit", author: "JRR Tolkien", genre: "Fantasy", description: "It's super epic"),
+        Book(name: "the Hobbit", author: "JRR Tolkien", genre: "Fantasy", description: "It's super epic"),
         Book(name: "Harry Potter", author: "JK Rowling", genre: "Fantasy", description: "It's a blast!"),
         Book(name: "The Little Prince", author: "don't remember", genre: "Cute", description: "It's super cute!")
     ]
