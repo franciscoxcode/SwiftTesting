@@ -1,14 +1,23 @@
 import SwiftUI
 
-struct DatePickerWheelView: View {
-    @State private var colorFavorito = Color.blue
-    
+struct ContentView: View {
     var body: some View {
-        ColorPicker("Elige un color", selection: $colorFavorito)
-            .padding()
+        NavigationStack {
+            NavigationLink("Go to profile"){
+                ProfileView()
+            }
+            .navigationTitle("Home")
+        }
+    }
+}
+
+struct ProfileView: View {
+    var body: some View {
+        Text("This is the profile screen")
+            .navigationTitle("Profile")
     }
 }
 
 #Preview {
-    DatePickerWheelView()
+    ContentView()
 }
