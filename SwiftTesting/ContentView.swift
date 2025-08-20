@@ -1,43 +1,57 @@
 import SwiftUI
 
-struct Person: Hashable {
+struct Book: Hashable {
     let name: String
-    let age: Int
-    let city: String
+    let author: String
+    let genre: String
+    let description: String
 }
 
 struct ContentView: View {
     
-    let people = [
-        Person(name: "Benjamin", age: 22, city: "Mexico City"),
-        Person(name: "Luigi", age: 33, city: "Rome"),
-        Person(name: "April", age: 45, city: "Hamburg")
+    let books = [
+        Book(name: "The Hobbit", author: "JRR Tolkien", genre: "Fantasy", description: "It's super epic"),
+        Book(name: "Harry Potter", author: "JK Rowling", genre: "Fantasy", description: "It's a blast!"),
+        Book(name: "The Little Prince", author: "don't remember", genre: "Cute", description: "It's super cute!")
     ]
     
     var body: some View {
         NavigationStack {
-            List(people, id: \.self){ person in
-                NavigationLink(person.name, value: person)
-            }
-            .navigationTitle("People")
-            .navigationDestination(for: Person.self){ person in
-                ContactDetailView(person: person)
+            List(books, id: \.self){ book in
+                NavigationLink(value: book){
+                    HStack {
+                        Image(systemName: book.genre == "Fantasy" ? "cloud" : "sparkles")
+                        VStack {
+                            Text(book.name)
+                            Text(book.author)
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                        }
+                    }
                 }
             }
-        }
-    }
-
-struct ContactDetailView: View {
-    let person: Person
-    
-    var body: some View {
-        VStack {
-            Text(person.name)
-            Text("\(person.age)")
-            Text(person.city)
+            .navigationTitle("Library")
+            .navigationDestination(for: Book.self) { book in
+                BookDetailView(book: book)
+            }
         }
     }
 }
+
+struct BookDetailView: View {
+    let book: Book
+    
+    var body: some View {
+        VStack {
+            Text("Author: \(book.author)")
+            Text("Genre: \(book.genre)")
+            Text("Description: \(book.description)")
+        }
+        .navigationTitle(book.name)
+    }
+}
+
+
 
 #Preview {
     ContentView()
