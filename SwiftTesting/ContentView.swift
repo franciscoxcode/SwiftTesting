@@ -1,29 +1,41 @@
 import SwiftUI
 
+struct Person: Hashable {
+    let name: String
+    let age: Int
+    let city: String
+}
+
 struct ContentView: View {
+    
+    let people = [
+        Person(name: "Benjamin", age: 22, city: "Mexico City"),
+        Person(name: "Luigi", age: 33, city: "Rome"),
+        Person(name: "April", age: 45, city: "Hamburg")
+    ]
+    
     var body: some View {
         NavigationStack {
-            NavigationLink("Level 2"){
-                Level2View()
+            List(people, id: \.self){ person in
+                NavigationLink(person.name, value: person)
             }
-            .navigationTitle("Level 1")
+            .navigationTitle("People")
+            .navigationDestination(for: Person.self){ person in
+                ContactDetailView(person: person)
+                }
+            }
         }
     }
-}
 
-struct Level2View: View {
+struct ContactDetailView: View {
+    let person: Person
+    
     var body: some View {
-            NavigationLink("Level 3"){
-                Level3View()
-            }
-            .navigationTitle("Level 2")
-    }
-}
-
-struct Level3View: View {
-    var body: some View {
-        Text("This is Level 3")
-            .navigationTitle("Level 3")
+        VStack {
+            Text(person.name)
+            Text("\(person.age)")
+            Text(person.city)
+        }
     }
 }
 
