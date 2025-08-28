@@ -1,106 +1,146 @@
 import SwiftUI
 
-struct Character: Hashable {
+struct Actor: Hashable, Identifiable {
+    let id = UUID()
     let name: String
     let role: String
     let bio: String
 }
 
-struct Book: Hashable {
-    let name: String
-    let author: String
+struct Movie: Hashable, Identifiable {
+    let id = UUID()
+    let title: String
+    let year: Int
     let genre: String
+    let director: String
     let description: String
-    let characters: [Character]
+    let actors: [Actor]
 }
 
 struct ContentView: View {
-
-let books = [
-    Book(name: "The Hobbit", author: "JRR Tokien", genre: "fantasy", description: "A classic adventure of Bilbo Baggins traveling with dwarves to reclaim their treasure guarded by a dragon.", characters: [
-        Character(name: "Bilbo Baggins", role: "protagonist", bio: "A hobbit who prefers comfort but finds courage on an epic quest."),
-        Character(name: "Gandalf", role: "mentor", bio: "A wise wizard guiding Bilbo and the dwarves."),
-        Character(name: "Smaug", role: "villain", bio: "A mighty dragon guarding the stolen treasure.")
-    ]),
-    Book(name: "The Martian", author: "Andy Weir", genre: "sci-fi", description: "An astronaut stranded on Mars uses science and determination to survive while waiting for rescue.", characters: [
-        Character(name: "Mark Watney", role: "protagonist", bio: "A botanist and astronaut stranded alone on Mars."),
-        Character(name: "Melissa Lewis", role: "mentor", bio: "Commander of the Ares III mission, supportive and determined."),
-        Character(name: "Mars Environment", role: "villain", bio: "The harsh and unforgiving Martian landscape.")
-    ]),
-    Book(name: "Clean Code", author: "Robert C. Martin (Uncle Bob)", genre: "programming", description: "A book about writing code that is easy to read, maintain, and extend.", characters: [
-        Character(name: "Uncle Bob", role: "mentor", bio: "An experienced software engineer teaching clean practices."),
-        Character(name: "The Junior Dev", role: "protagonist", bio: "A beginner learning how to improve coding habits."),
-        Character(name: "Legacy Code", role: "villain", bio: "Messy, outdated code that resists refactoring.")
-    ])
-]
+    
+    let movies = [
+        Movie(
+            title: "Inception",
+            year: 2010,
+            genre: "Sci-Fi",
+            director: "Christopher Nolan",
+            description: "A skilled thief enters people's dreams to steal secrets, but faces his toughest mission: planting an idea.",
+            actors: [
+                Actor(name: "Leonardo DiCaprio", role: "Protagonist", bio: "Plays Dom Cobb, a thief who specializes in extracting secrets from dreams."),
+                Actor(name: "Joseph Gordon-Levitt", role: "Sidekick", bio: "Plays Arthur, Cobb’s partner who manages mission details."),
+                Actor(name: "Cillian Murphy", role: "Target", bio: "Plays Robert Fischer, heir to a business empire, the target of inception.")
+            ]
+        ),
+        Movie(
+            title: "The Matrix",
+            year: 1999,
+            genre: "Sci-Fi",
+            director: "The Wachowskis",
+            description: "A computer hacker discovers the truth about reality and his role in the war against its controllers.",
+            actors: [
+                Actor(name: "Keanu Reeves", role: "Protagonist", bio: "Plays Neo, a hacker who learns he is 'The One'."),
+                Actor(name: "Laurence Fishburne", role: "Mentor", bio: "Plays Morpheus, leader of the rebels who guides Neo."),
+                Actor(name: "Hugo Weaving", role: "Villain", bio: "Plays Agent Smith, an AI enforcer inside the Matrix.")
+            ]
+        ),
+        Movie(
+            title: "Interstellar",
+            year: 2014,
+            genre: "Sci-Fi",
+            director: "Christopher Nolan",
+            description: "A team of explorers travels through a wormhole in space to secure humanity's survival.",
+            actors: [
+                Actor(name: "Matthew McConaughey", role: "Protagonist", bio: "Plays Cooper, a former pilot who joins the mission to save humanity."),
+                Actor(name: "Anne Hathaway", role: "Scientist", bio: "Plays Amelia Brand, a scientist on the expedition."),
+                Actor(name: "Jessica Chastain", role: "Daughter", bio: "Plays Murphy, Cooper's daughter, who grows up to be a scientist on Earth.")
+            ]
+        )
+    ]
     
     var body: some View {
-        NavigationStack{
-            List(books, id: \.self) { book in
-                NavigationLink(book.name, value: book)
+        NavigationStack {
+            List(movies) { movie in
+                NavigationLink(value: movie){
+                    VStack(alignment: .leading) {
+                        Text(movie.title)
+                        Text(String(movie.year))
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                }
             }
-            .navigationTitle("Library")
-            .navigationDestination(for: Book.self) { book in
-                BookDetailView(book: book)
+            .navigationTitle("Movies")
+            .navigationDestination(for: Movie.self) { movie in
+                MovieDetailView(movie: movie)
             }
         }
     }
 }
 
-struct BookDetailView: View {
-    let book: Book
+struct MovieDetailView: View {
+    let movie: Movie
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("Author:")
+                Text("Director:")
                     .bold()
-                Text(book.author)
+                Text(movie.director)
+            }
+            HStack {
+                Text("Year:")
+                    .bold()
+                Text(String(movie.year))
             }
             HStack {
                 Text("Genre:")
                     .bold()
-                Text(book.genre)
+                Text(movie.genre)
             }
-            Text("Description")
-                .bold()
-            Text(book.description)
-            Text("Characters")
-                .font(.title2)
-            ForEach(book.characters, id: \.self) { character in
-                NavigationLink(character.name, value: character)
+            VStack(alignment: .leading) {
+                Text("Description:")
+                    .bold()
+                Text(movie.description)
+            }
+            VStack(alignment: .leading) {
+                Text("Actors:")
+                    .bold()
+                ForEach (movie.actors) { actor in
+                    NavigationLink(value: actor) {
+                        Text(actor.name)
+                    }
+                }
             }
             Spacer()
-            }
-        .navigationTitle(book.name)
-        .navigationDestination(for: Character.self) { character in
-            CharacterDetailView(character: character)
         }
         .padding(.horizontal, 25)
-        .padding(.top, 20)
+        .navigationTitle(movie.title)
+        .navigationDestination(for: Actor.self) { actor in
+            ActorDetailView(actor: actor)
+        }
     }
 }
 
-struct CharacterDetailView: View {
-    let character: Character
+struct ActorDetailView: View {
+    let actor: Actor
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("Role:")
                     .bold()
-                Text(character.role)
+                Text(actor.role)
             }
-            HStack (alignment: .top) {
+            HStack(alignment: .top) {
                 Text("Bio:")
                     .bold()
-                Text(character.bio)
+                Text(actor.bio)
             }
             Spacer()
         }
-        .navigationTitle(character.name)
-        .padding(.horizontal, 20)
-        .padding(.top, 20)
+        .padding(.horizontal, 25)
+        .navigationTitle(actor.name)
     }
 }
 
