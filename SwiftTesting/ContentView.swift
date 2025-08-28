@@ -2,39 +2,30 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var count = 0
+    @State var color: Color = .green
     
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Main")){
-                    HStack {
-                        Text("\(count)")
-                        Button("+"){
-                            count += 1
-                        }
-                    }
+                Section(header: Text("Preview")) {
+                    Circle().foregroundColor(color)
                 }
                 Section(header: Text("Navigation")) {
-                    NavigationLink("B Screen", destination: BScreen(count: $count))
+                    NavigationLink("Edit") {
+                        EditCircleView(color: $color)
+                    }
                 }
             }
         }
     }
 }
 
-struct BScreen: View {
-    
-    @Binding var count: Int
+struct EditCircleView: View {
+    @Binding var color: Color
     
     var body: some View {
-        VStack {
-            Text("\(count)")
-            Stepper("Counter", value: $count)
-            Button("Reset") {
-                count = 0
-            }
-        }
+        ColorPicker("Select Color", selection: $color)
+            .padding(.horizontal, 40)
     }
 }
 
