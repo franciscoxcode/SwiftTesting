@@ -1,34 +1,40 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    @State var color: Color = .green
+    @State var name: String = ""
+    @State var isPublic: Bool = true
     
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Preview")) {
-                    Circle().foregroundColor(color)
-                }
-                Section(header: Text("Navigation")) {
-                    NavigationLink("Edit") {
-                        EditCircleView(color: $color)
+                Section(header: Text("Options")) {
+                    VStack {
+                        TextField("Name", text: $name)
+                        Toggle("Public Profile", isOn: $isPublic)
+                        }
                     }
+                Section {
+                    NavigationLink("View Details", destination: DetailsView(name: $name, isPublic: $isPublic))
                 }
             }
+            .navigationTitle("Profile")
         }
     }
 }
 
-struct EditCircleView: View {
-    @Binding var color: Color
+struct DetailsView: View {
+    @Binding var name: String
+    @Binding var isPublic: Bool
     
     var body: some View {
-        ColorPicker("Select Color", selection: $color)
-            .padding(.horizontal, 40)
+        Form {
+            VStack() {
+                LabeledContent("Name", value: name.isEmpty ? "Unknown" : name)
+                LabeledContent("Public Profile", value: isPublic ? "yes" : "no")
+            }
+        }
     }
 }
-
 
 #Preview {
     ContentView()
