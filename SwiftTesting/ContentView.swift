@@ -1,38 +1,37 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var counter: Double = 0.0
+    @State private var color: Color = .gray
     
     var body: some View {
-        NavigationStack() {
-            HStack {
-                Text("\(Int(counter))")
-                Button("+") {
-                    counter += 1
-                }
+        NavigationStack {
+            VStack(spacing: 30) {
+                Spacer()
+                Circle().fill(color)
+                    .padding(.horizontal, 50)
+                NavigationLink("Color Picker", destination: DetailView(color: $color))
+                Spacer()
+                Spacer()
             }
-            NavigationLink("Screen B", destination: BScreen(counter: $counter))
-                .foregroundColor(.white)
-                .padding(.vertical, 13)
-                .padding(.horizontal, 25)
-                .background(.gray)
-                .cornerRadius(25)
-                .navigationTitle("Counter")
+            .navigationTitle("Circle")
         }
     }
 }
 
-struct BScreen: View {
-    @Binding var counter: Double
+struct DetailView: View {
+    @Binding var color: Color
     
     var body: some View {
         VStack {
-            Text("\(Int(counter))")
-            Slider(value: $counter, in: 0...100, step: 1.0)
-                .padding(50)
+            Circle().fill(color)
+                .padding(.horizontal, 50)
+                .padding(.vertical, 20)
+            Form {
+                ColorPicker("Choose Color", selection: $color, supportsOpacity: true)
+            }
         }
-        .navigationTitle("Slider")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("Color Picker")
     }
 }
 
