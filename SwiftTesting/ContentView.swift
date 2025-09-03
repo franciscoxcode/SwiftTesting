@@ -1,40 +1,41 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var name: String = ""
-    @State var isPublic: Bool = true
+    @State var counter: Double = 0.0
     
     var body: some View {
-        NavigationStack {
-            Form {
-                Section(header: Text("Options")) {
-                    VStack {
-                        TextField("Name", text: $name)
-                        Toggle("Public Profile", isOn: $isPublic)
-                        }
-                    }
-                Section {
-                    NavigationLink("View Details", destination: DetailsView(name: $name, isPublic: $isPublic))
+        NavigationStack() {
+            HStack {
+                Text("\(Int(counter))")
+                Button("+") {
+                    counter += 1
                 }
             }
-            .navigationTitle("Profile")
+            NavigationLink("Screen B", destination: BScreen(counter: $counter))
+                .foregroundColor(.white)
+                .padding(.vertical, 13)
+                .padding(.horizontal, 25)
+                .background(.gray)
+                .cornerRadius(25)
+                .navigationTitle("Counter")
         }
     }
 }
 
-struct DetailsView: View {
-    @Binding var name: String
-    @Binding var isPublic: Bool
+struct BScreen: View {
+    @Binding var counter: Double
     
     var body: some View {
-        Form {
-            VStack() {
-                LabeledContent("Name", value: name.isEmpty ? "Unknown" : name)
-                LabeledContent("Public Profile", value: isPublic ? "yes" : "no")
-            }
+        VStack {
+            Text("\(Int(counter))")
+            Slider(value: $counter, in: 0...100, step: 1.0)
+                .padding(50)
         }
+        .navigationTitle("Slider")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
+
 
 #Preview {
     ContentView()
